@@ -1,0 +1,85 @@
+version: '3.8'
+
+x-xxx-common-services-config: &common-services-config
+  restart: always
+
+x-mongo-secrets: &mongo-credentials
+  MONGO_USER: &mongo-user ${MONGO_USER}
+  MONGO_PASS: &mongo-pass ${MONGO_PASS}
+  MONGO_RSN: ${MONGO_RSN}
+  MONGO_AUTH_DB: ${MONGO_AUTH_DB}
+  MONGO_PORT: ${MONGO_PORT}
+  MONGO_DB_NAME: ${MONGO_DB_NAME}
+
+x-kafka-env: &kafka-env
+  KAFKA_BROKER_ID: ${KAFKA_BROKER_ID}
+  KAFKA_ADVERTISED_PORT: ${KAFKA_ADVERTISED_PORT}
+  BROKER_ID_COMMAND: ${BROKER_ID_COMMAND}
+  KAFKA_ZOOKEEPER_CONNECT: ${KAFKA_ZOOKEEPER_CONNECT}
+  KAFKA_CREATE_TOPICS: ${KAFKA_CREATE_TOPICS}
+  KAFKA_LISTENERS: ${KAFKA_LISTENERS}
+
+x-kafka-conf: &kafka-conf
+  KAFKA_ORDERS_TOPIC: ${KAFKA_ORDERS_TOPIC}
+  KAFKA_LOGGING_TOPIC: ${KAFKA_LOGGING_TOPIC}
+  KAFKA_ORDER_PAID_KEY: ${KAFKA_ORDER_PAID_KEY}
+  KAFKA_BAD_IPN_ERROR_KEY: ${KAFKA_BAD_IPN_ERROR_KEY}
+  KAFKA_BAD_BUSINESS_EMAIL_KEY: ${KAFKA_BAD_BUSINESS_EMAIL_KEY}
+  KAFKA_HTTP_ERROR_KEY: ${KAFKA_HTTP_ERROR_KEY}
+
+x-heart-beat-conf: &hb-conf
+  HEART_BEAT_PORT: ${HEART_BEAT_PORT}
+  HEART_BEAT_ENDPOINT: ${HEART_BEAT_ENDPOINT}
+  HEART_BEAT_PERIOD: ${HEART_BEAT_PERIOD}
+
+x-paypal-conf: &paypal-conf
+  MY_PAYPAL_ACCOUNT: ${MY_PAYPAL_ACCOUNT}
+  PAYPAL_ENDPOINT: ${PAYPAL_ENDPOINT}
+
+services:
+
+  payment-microservice:
+    build:
+      dockerfile: ./payment-microservice/docker/application-context/Dockerfile
+      context: ../../
+    <<: *common-services-config
+    environment:
+      KAFKA_BOOTSTRAP_SERVER: kafka:9092
+      MONGO_HOST: mongo
+      SERVICE_NAME: payment-microservice
+      HEART_BEAT_HOST: payment-microservice
+      <<: *mongo-credentials
+      <<: *kafka-conf
+      <<: *hb-conf
+      <<: *paypal-conf
+    ports:
+    - 8080:8080
+    depends_on:
+      - mongo
+      - kafka
+      - zookeeper
+
+  mongo:
+    build:
+      dockerfile: ../../payment-microservice/docker/mongo-context/Dockerfile
+      context: .
+    <<: *common-services-config
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: *mongo-user
+      MONGO_INITDB_ROOT_PASSWORD: *mongo-pass
+    volumes:
+      - mongodb-data-volume:/data/db
+
+  zookeeper:
+    <<: *common-services-config
+    image: library/zookeeper:3.4.13
+    environment:
+      ZOO_MY_ID: 1
+
+  kafka:
+    <<: *common-services-config
+    image: wurstmeister/kafka:2.11-2.0.0
+    environment: *kafka-env
+
+volumes:
+  mongodb-data-volume:

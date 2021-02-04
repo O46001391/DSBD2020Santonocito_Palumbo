@@ -1,0 +1,7 @@
+Dockerfile
+.dockerignore
+.git*
+.mvn/
+
+HELP.md
+!.mvn/wrapper/maven-wrapper.jar

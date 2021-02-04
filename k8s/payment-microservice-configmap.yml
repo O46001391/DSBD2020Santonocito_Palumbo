@@ -1,0 +1,47 @@
+apiVersion: v1
+data:
+  HEART_BEAT_ENDPOINT: /heart-beat-sink
+  HEART_BEAT_PERIOD: "60000"
+  HEART_BEAT_PORT: "8080"
+  KAFKA_BAD_BUSINESS_EMAIL_KEY: received_wrong_business_paypal_payment
+  KAFKA_BAD_IPN_ERROR_KEY: bad_ipn_error
+  KAFKA_HTTP_ERROR_KEY: http_errors
+  KAFKA_LOGGING_TOPIC: logging
+  KAFKA_ORDER_PAID_KEY: order_paid
+  KAFKA_ORDERS_TOPIC: orders
+  MY_PAYPAL_ACCOUNT: orazio1997@outlook.it
+  PAYPAL_ENDPOINT: https://ipnpb.sandbox.paypal.com/cgi-bin/webscr
+kind: ConfigMap
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"kind":"ConfigMap","apiVersion":"v1","metadata":{"name":"payment-microservice-configmap","creationTimestamp":null},"data":{"HEART_BEAT_ENDPOINT":"/heart-beat-sink","HEART_BEAT_PERIOD":"60000","HEART_BEAT_PORT":"8080","KAFKA_BAD_BUSINESS_EMAIL_KEY":"received_wrong_business_paypal_payment","KAFKA_BAD_IPN_ERROR_KEY":"bad_ipn_error","KAFKA_HTTP_ERROR_KEY":"http_errors","KAFKA_LOGGING_TOPIC":"logging","KAFKA_ORDERS_TOPIC":"orders","KAFKA_ORDER_PAID_KEY":"order_paid","MY_PAYPAL_ACCOUNT":"orazio1997@outlook.it","PAYPAL_ENDPOINT":"https://ipnpb.sandbox.paypal.com/cgi-bin/webscr"}}
+  creationTimestamp: "2021-02-03T19:51:21Z"
+  managedFields:
+  - apiVersion: v1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:data:
+        .: {}
+        f:HEART_BEAT_ENDPOINT: {}
+        f:HEART_BEAT_PERIOD: {}
+        f:HEART_BEAT_PORT: {}
+        f:KAFKA_BAD_BUSINESS_EMAIL_KEY: {}
+        f:KAFKA_BAD_IPN_ERROR_KEY: {}
+        f:KAFKA_HTTP_ERROR_KEY: {}
+        f:KAFKA_LOGGING_TOPIC: {}
+        f:KAFKA_ORDER_PAID_KEY: {}
+        f:KAFKA_ORDERS_TOPIC: {}
+        f:MY_PAYPAL_ACCOUNT: {}
+        f:PAYPAL_ENDPOINT: {}
+      f:metadata:
+        f:annotations:
+          .: {}
+          f:kubectl.kubernetes.io/last-applied-configuration: {}
+    manager: kubectl-create
+    operation: Update
+    time: "2021-02-03T19:51:21Z"
+  name: payment-microservice-configmap
+  namespace: default
+  resourceVersion: "47923"
+  uid: f3d8fa36-2cb8-4a3c-84ee-a4de184df94c
