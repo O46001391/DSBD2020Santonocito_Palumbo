@@ -2,7 +2,7 @@
 
 >>> DSBD2020 SANTONOCITO PALUMBO PROJECT.
 
-# TEST MICROSERVIZIO #
+# TEST MICROSERVIZIO DOCKER-COMPOSE #
 
 >>> 1) Importare l'intero progetto;
 >>> 2) Recarsi nella directory: 
@@ -12,6 +12,17 @@
 >>> 5) Aprire /bin/sh del container Mongo;
 >>> 6) Avviare da linea di comando lo script di setting del Replica-Set all'interno della mongo-client-shell integrata:
 >>>    mongo -u root -p 1208 --port 27017 < ./docker-entrypoint-initdb.d/replica-init.js;
+
+# SETTING MICROSERVIZIO PER KUBERNETES #
+
+>>> 1) Avviare il cluster;
+>>> 2) Accertarsi che il POD contenente il database "payment-microservice-db..." sia la REPLICA PRIMARY:
+>>>    - Accedere al POD con il comando:
+>>>      -> kubectl exec --stdin --tty <NOME_DEL_POD> -- /bin/sh
+>>>    - Eseguire il comando con le seguenti credenziali di test (di base un replica set di una sola replica che è quella che è contenuta nel POD):
+>>>      -> mongo -u root -p 1208 --eval 'rs.initiate()'
+>>>    - Uscire dal container:
+>>>      -> exit
 
 # DOCUMENTAZIONE #
 
