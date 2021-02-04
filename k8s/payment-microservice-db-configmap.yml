@@ -8,8 +8,8 @@ kind: ConfigMap
 metadata:
   annotations:
     kubectl.kubernetes.io/last-applied-configuration: |
-      {"apiVersion":"v1","data":{"MONGO_AUTH_DB":"admin","MONGO_DB_NAME":"paymentdb","MONGO_PORT":"27017","MONGO_RSN":"rs0"},"kind":"ConfigMap","metadata":{"annotations":{},"creationTimestamp":"2021-02-01T19:41:11Z","managedFields":[{"apiVersion":"v1","fieldsType":"FieldsV1","fieldsV1":{"f:data":{".":{},"f:MONGO_AUTH_DB":{},"f:MONGO_DB_NAME":{},"f:MONGO_PORT":{},"f:MONGO_RSN":{}},"f:metadata":{"f:annotations":{}}},"manager":"kubectl-create","operation":"Update","time":"2021-02-01T19:41:11Z"},{"apiVersion":"v1","fieldsType":"FieldsV1","fieldsV1":{"f:metadata":{"f:annotations":{"f:kubectl.kubernetes.io/last-applied-configuration":{}}}},"manager":"kubectl-client-side-apply","operation":"Update","time":"2021-02-03T08:38:46Z"}],"name":"payment-microservice-db-configmap","namespace":"default","resourceVersion":"16231","uid":"8d3fc5b3-da2c-48a3-bf45-7eefa3d0c072"}}
-  creationTimestamp: "2021-02-03T14:03:29Z"
+      {"kind":"ConfigMap","apiVersion":"v1","metadata":{"name":"payment-microservice-db-configmap","creationTimestamp":null},"data":{"MONGO_AUTH_DB":"admin","MONGO_DB_NAME":"paymentdb","MONGO_PORT":"27017","MONGO_RSN":"rs0"}}
+  creationTimestamp: "2021-02-04T08:54:44Z"
   managedFields:
   - apiVersion: v1
     fieldsType: FieldsV1
@@ -24,10 +24,10 @@ metadata:
         f:annotations:
           .: {}
           f:kubectl.kubernetes.io/last-applied-configuration: {}
-    manager: kubectl-client-side-apply
+    manager: kubectl-create
     operation: Update
-    time: "2021-02-03T14:03:29Z"
+    time: "2021-02-04T08:54:44Z"
   name: payment-microservice-db-configmap
   namespace: default
-  resourceVersion: "31731"
-  uid: 3badd48a-409f-4ebf-92cc-c16c90745c80
+  resourceVersion: "51794"
+  uid: 1720e990-5c2d-44ac-b3e1-f550a1894d1d

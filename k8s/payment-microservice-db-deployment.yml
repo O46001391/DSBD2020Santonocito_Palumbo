@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
         - name: payment-microservice-db
-          image: payment-microservice-db:v1
+          image: oraziosantonocito/dsbd.2020-santonocito_palumbo:payment-microservice-db
           ports:
             - containerPort: 27017
           envFrom:
@@ -23,7 +23,7 @@ spec:
                 name: payment-microservice-db-secret
           volumeMounts:
             - mountPath: /data/db
-              name: payment-microservice-db-volume-mongodb-v3
+              name: payment-microservice-db-volume
           readinessProbe:
             exec:
               command:
@@ -42,7 +42,6 @@ spec:
             timeoutSeconds: 1
 
       volumes:
-        - name: payment-microservice-db-volume-mongodb-v3
-          hostPath:
-            path: /payment-microservice-db-volume-mongodb-v3
-            type: DirectoryOrCreate
+        - name: payment-microservice-db-volume
+          persistentVolumeClaim:
+            claimName: payment-microservice-db-volume

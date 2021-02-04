@@ -38,9 +38,6 @@ public class PaymentRouter {
         ).andRoute(
                 RequestPredicates.GET("/transactions"),
                 paymentAdapter::getTransactions
-        ).andRoute(
-                RequestPredicates.GET("/ping"),
-                paymentAdapter::getPing
         );
     }
 

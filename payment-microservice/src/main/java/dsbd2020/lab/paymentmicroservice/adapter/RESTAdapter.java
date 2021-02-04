@@ -46,9 +46,6 @@ public class RESTAdapter {
                         .flatMap(payment -> paymentService.savePayment(payment)), Payment.class);
     }
 
-    public Mono<ServerResponse> getPing(ServerRequest serverRequest) {
-        return ServerResponse.ok().build();
-    }
 
     /**
      * Metodo per la gestione dell'Istant Payment Notification di Paypal

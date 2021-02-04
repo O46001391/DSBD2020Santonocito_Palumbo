@@ -11,9 +11,29 @@ spec:
       labels:
         app: payment-microservice
     spec:
+      initContainers:
+        - name: mongo-init-container
+          image: mongo:latest
+          command:
+            - sh
+            - -c
+            - |
+              env | grep MONGO
+              while ! mongo --host payment-microservice-db.default.svc.cluster.local --port $MONGO_PORT -u $MONGO_INITDB_ROOT_USERNAME \
+              -p $MONGO_INITDB_ROOT_PASSWORD --eval 'db.adminCommand("ping")' > /dev/null 2>&1; do
+                echo Waiting for MongoDB Reply
+                sleep 5
+              done
+          envFrom:
+            - configMapRef:
+                name: payment-microservice-db-configmap
+            - secretRef:
+                name: payment-microservice-db-secret
+            - configMapRef:
+                name: payment-microservice-configmap
       containers:
         - name: payment-microservice
-          image: payment-microservice:v1
+          image: oraziosantonocito/dsbd.2020-santonocito_palumbo:payment-microservice
           ports:
             - containerPort: 8080
           envFrom:
@@ -25,24 +45,12 @@ spec:
                 name: payment-microservice-db-secret
           env:
             - name: KAFKA_BOOTSTRAP_SERVER
-              value: kafka:9092
+              value: kafkabroker.default.svc.cluster.local:9092
             - name: MONGO_HOST
               value: payment-microservice-db.default.svc.cluster.local
             - name: SERVICE_NAME
               value: payment-microservice.default.svc.cluster.local
             - name: HEART_BEAT_HOST
-              value: payment-microservice.default.svc.cluster.local
-          livenessProbe:
-            httpGet:
-              path: /ping
-              port: 8080
-            initialDelaySeconds: 60
-            periodSeconds: 3
-          readinessProbe:
-            httpGet:
-              path: /ping
-              port: 8080
-            initialDelaySeconds: 30
-            periodSeconds: 3
+              value: 127.0.0.1 # L'heart beat service è simulato.
 
 
