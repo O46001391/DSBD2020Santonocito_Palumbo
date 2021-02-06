@@ -9,24 +9,24 @@ import java.util.Map;
  */
 public class Beat {
 
-    private String service;
+    private String serviceName;
 
     private String serviceStatus;
 
-    private String DBStatus;
+    private String dbStatus;
 
-    public Beat(String service, String serviceStatus, String DBStatus) {
-        this.service = service;
+    public Beat(String serviceName, String serviceStatus, String dbStatus) {
+        this.serviceName = serviceName;
         this.serviceStatus = serviceStatus;
-        this.DBStatus = DBStatus;
+        this.dbStatus = dbStatus;
     }
 
     public String getService() {
-        return service;
+        return serviceName;
     }
 
     public Beat setService(String service) {
-        this.service = service;
+        this.serviceName = service;
         return this;
     }
 
@@ -40,20 +40,20 @@ public class Beat {
     }
 
     public String getDBStatus() {
-        return DBStatus;
+        return dbStatus;
     }
 
     public Beat setDBStatus(String DBStatus) {
-        this.DBStatus = DBStatus;
+        this.dbStatus = DBStatus;
         return this;
     }
 
     @Override
     public String toString() {
         return "Beat{" +
-                "service='" + service + '\'' +
+                "serviceName='" + serviceName + '\'' +
                 ", serviceStatus='" + serviceStatus + '\'' +
-                ", DBStatus='" + DBStatus + '\'' +
+                ", dbStatus='" + dbStatus + '\'' +
                 '}';
     }
 
@@ -65,9 +65,9 @@ public class Beat {
      */
     public Map<String, String> getBeatMap() {
         Map<String, String> beatMap = new HashMap<>();
-        beatMap.put("service", this.service);
+        beatMap.put("serviceName", this.serviceName);
         beatMap.put("serviceStatus", this.serviceStatus);
-        beatMap.put("DBStatus", this.DBStatus);
+        beatMap.put("dbStatus", this.dbStatus);
         return beatMap;
     }
 

@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: fault-detector-env
 data:
-  KAFKA_ADDRESS: kafkabroker:9092
+  KAFKA_ADDRESS: kafkabroker.default.svc.cluster.local:9092
   KAFKA_GROUP_ID: logging-group
   KAFKA_MAIN_TOPIC: logging
   FDHBPERIOD: "30000" #variabile globale periodo iterazione mappa

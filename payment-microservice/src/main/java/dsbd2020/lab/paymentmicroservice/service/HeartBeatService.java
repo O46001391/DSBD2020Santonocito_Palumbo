@@ -18,6 +18,7 @@ import org.springframework.web.client.RestTemplate;
 import reactor.core.publisher.Hooks;
 import reactor.core.publisher.Mono;
 
+import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;

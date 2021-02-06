@@ -1,8 +1,8 @@
 apiVersion: v1
 data:
-  HEART_BEAT_ENDPOINT: "/heart-beat-sink"
+  HEART_BEAT_ENDPOINT: "/ping"
   HEART_BEAT_PERIOD: "60000"
-  HEART_BEAT_PORT: "8080"
+  HEART_BEAT_PORT: "1234"
   KAFKA_BAD_BUSINESS_EMAIL_KEY: received_wrong_business_paypal_payment
   KAFKA_BAD_IPN_ERROR_KEY: bad_ipn_error
   KAFKA_HTTP_ERROR_KEY: http_errors

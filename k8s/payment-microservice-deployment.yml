@@ -51,6 +51,6 @@ spec:
             - name: SERVICE_NAME
               value: payment-microservice.default.svc.cluster.local
             - name: HEART_BEAT_HOST
-              value: 127.0.0.1 # L'heart beat service è simulato.
+              value: fault-detector-hb.default.svc.cluster.local
 
 
