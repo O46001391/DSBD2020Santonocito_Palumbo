@@ -39,4 +39,24 @@ spec:
       name: fd-port
   selector:
     app: fault-detector-hb
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: orders-service
+spec:
+  ports:
+    - port: 8080
+  selector:
+    app: orders-service
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: orders-service-db
+spec:
+  ports:
+    - port: 27017
+  selector:
+    app: orders-service-db
 

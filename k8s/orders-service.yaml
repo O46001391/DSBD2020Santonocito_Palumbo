@@ -1,0 +1,104 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orders-service-db
+spec:
+  selector:
+    matchLabels:
+      app: orders-service-db
+  template:
+    metadata:
+      labels:
+        app: orders-service-db
+    spec:
+      containers:
+        - name: orders-service-db
+          image: mongo:latest
+          ports:
+            - containerPort: 27017
+          envFrom:
+            - configMapRef:
+                name: orders-service-db-env-file
+            - secretRef:
+                name: orders-service-db-secret-file
+          volumeMounts:
+            - mountPath: /data/db
+              name: orders-service-db-volume
+          readinessProbe:
+            exec:
+              command:
+                - mongo
+                - --eval
+                - "db.adminCommand('ping')"
+            initialDelaySeconds: 10
+            timeoutSeconds: 1
+          livenessProbe:
+            exec:
+              command:
+                - mongo
+                - --eval
+                - "db.adminCommand('ping')"
+            initialDelaySeconds: 20
+            timeoutSeconds: 1
+      volumes:
+        - name: orders-service-db-volume
+          persistentVolumeClaim:
+            claimName: orders-db-volume
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orders-service
+spec:
+  selector:
+    matchLabels:
+      app: orders-service
+  template:
+    metadata:
+      labels:
+        app: orders-service
+    spec:
+      initContainers:
+        - name: waitmongo
+          image: mongo
+          command:
+            - sh
+            - -c
+            - |
+              env | grep MONGO
+              while ! mongo --host $MONGODB_HOSTNAME --port $MONGODB_PORT -u $MONGO_INITDB_ROOT_USERNAME \
+              -p $MONGO_INITDB_ROOT_PASSWORD --eval 'db.adminCommand("ping")' > /dev/null 2>&1; do
+                echo waiting for db
+                sleep 2
+              done
+          envFrom:
+            - configMapRef:
+                name: orders-service-env-file
+            - configMapRef:
+                name: orders-service-db-env-file
+            - secretRef:
+                name: orders-service-db-secret-file
+      containers:
+        - name: orders-service
+          image: ire97/orders_management:v10
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: orders-service-db-env-file
+            - configMapRef:
+                name: orders-service-env-file
+            - secretRef:
+                name: orders-service-db-secret-file
+          livenessProbe:
+            httpGet:
+              path: /ping1
+              port: 8080
+            initialDelaySeconds: 40
+            periodSeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /ping1
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 3

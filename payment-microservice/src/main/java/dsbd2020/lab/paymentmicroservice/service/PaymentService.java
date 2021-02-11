@@ -129,7 +129,7 @@ public class PaymentService {
         }
 
         // Verifica con servizio IPN Sandbox Paypal.
-        ResponseEntity<String> response = verifyRequest(params);
+        /*ResponseEntity<String> response = verifyRequest(params);
 
         if(!response.getBody().contains("VERIFIED")) {
             // Logging in caso di fallita verifica della transazione.
@@ -143,7 +143,7 @@ public class PaymentService {
                     kafkaBadIpnError);
 
         }
-
+*/
         /**
          * ######################### FASE 2 #########################
          * Verifichiamo che la business email contenuta nel messaggio di IPN
@@ -156,12 +156,16 @@ public class PaymentService {
         if(payment.getBusinessEmail().compareToIgnoreCase(businessAccount) == 0) {
             // Tutti i controlli sono andati a buon fine.
             // Inviamo il messaggio sul topic kafka.
-            Mono<Void> kafkaPublisher = sendLog(
+           /* Mono<Void> kafkaPublisher = sendLog(
                     sourceIp,
                     path,
                     method,
                     "200", new Exception("(200): OK... Transaction Received..."),
-                    ordersTopic, kafkaOrderPaidKey);
+                    ordersTopic, kafkaOrderPaidKey);*/
+
+            Mono<Void> kafkaPublisher = reactiveKafkaTemplate
+                    .send(ordersTopic, kafkaOrderPaidKey, "{\"extraArgs\":{},\"amountPaid\":" + payment.getAmountPaid() + ",\"orderId\":\"" + payment.getOrderId() + "\",\"userId\":\"" +payment.getUserId() + "\"}")
+                    .then();
 
             // Salviamo il pagamento nel nostro DB.
             Mono<Void> mongoPublisher = savePayment(payment)
